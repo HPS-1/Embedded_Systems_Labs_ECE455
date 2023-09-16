@@ -56,9 +56,6 @@ void FSMFramework (unsigned int numofstates, unsigned int (*states[numofstates])
 
 unsigned int state0(void) //State for Furnace On
 {
-  //Delay_SysTick (500);
-  //printf("State0\r\n");
-  //return 1;
 	//Enter Code
 	SetLED(4);
 	FurnaceTimer = 0;
@@ -94,9 +91,6 @@ unsigned int state0(void) //State for Furnace On
 
 unsigned int state1(void) //State for Furnace Off (On Furnace Cool-down)
 {
-	//Delay_SysTick (500);
-	//printf("State1\r\n");
-	//return 2;
 	//Enter Code
 	FurnaceTimer = 0;
 	//Execute Code
@@ -127,10 +121,7 @@ unsigned int state1(void) //State for Furnace Off (On Furnace Cool-down)
 
 unsigned int state2(void) //State for Furnace Off (Temperature Successfully Heated to)
 {
-	//Delay_SysTick (500);
-	//printf("State2\r\n");
-	//return 0;
-	//Enter Code
+	//Enter Code(None here)
 	//Execute Code
 	while(1){
 		current_temp = (-102.4)+(0.05*ReadPotentiometer());
@@ -169,30 +160,15 @@ int main( void )
 	Initialize();
 	InitSysTick();
 	unsigned int (*lab1states[3]) (void);
-  lab1states[0] = state0;
-  lab1states[1] = state1;
-  lab1states[2] = state2;
+  	lab1states[0] = state0;
+  	lab1states[1] = state1;
+  	lab1states[2] = state2;
 
 	//Printf now goes to the UART, so be sure to have PuTTY open and connected
 	printf("SYSTEM STARTED\r\n");
 	PrintTimer = 0;
 	while(1){
 		FSMFramework (3, lab1states, 0);
-		//unsigned int pot = ReadPotentiometer();
-		//Delay_SysTick (500);
-		//printf("%u\r\n", pot);
-		
-		/*unsigned int joy = ReadJoystick();
-		if (joy != 0 && flag == 0){
-			flag = 1;
-			printf("%u\r\n", joy);
-		} else if (joy == 0 && flag ==1){
-			flag = 0;
-			printf("%u\r\n", joy);
-		}*/
-    //Delay_SysTick (500);
-		//printf("aaa!\r\n");
-		//Delay_SysTick (500);
 	}
 	
 	//Your code should always terminate in an endless loop if it is done. If you don't
