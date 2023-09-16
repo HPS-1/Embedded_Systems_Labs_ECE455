@@ -1,0 +1,101 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             handle_pend,CODE,READONLY
+    2 00000000                 EXTERN           _global_resume_stack_pointer
+    3 00000000                 EXTERN           _global_save_stack_pointer
+    4 00000000                 GLOBAL           PendSV_Handler
+    5 00000000                 PRESERVE8
+    6 00000000         
+    7 00000000         PendSV_Handler
+    8 00000000         
+    9 00000000         ; The exception entry hardware pushes PSR,PC,LR,r12,r3-r
+                       0
+   10 00000000         ; that just leaves r4-r11
+   11 00000000 E92D 0FF0       PUSH             {r4-r11}
+   12 00000004         
+   13 00000004         ; save the old stack pointer (indirect, so 2 loads)
+   14 00000004 4806            LDR              r0,=_global_save_stack_pointer
+   15 00000006 6800            LDR              r0,[r0]
+   16 00000008 F8C0 D000       STR              SP,[r0]
+   17 0000000C         
+   18 0000000C         ; load the requested new stack pointer (indirect, so 3 l
+                       oads)
+   19 0000000C 4805            LDR              r0,=_global_resume_stack_pointe
+r
+   20 0000000E 6800            LDR              r0,[r0]
+   21 00000010 F8D0 D000       LDR              SP,[r0]
+   22 00000014         
+   23 00000014         ; magic return value to get us back to Thread mode with 
+                       MSP stack
+   24 00000014 F06F 0E06       MOV              LR,#0xFFFFFFF9
+   25 00000018         
+   26 00000018         ; The exception exit hardware pops PSR,PC,LR,r12,r3-r0
+   27 00000018         ; that just leaves r4-r11
+   28 00000018 E8BD 0FF0       POP              {r4-r11}
+   29 0000001C         
+   30 0000001C         ;return
+   31 0000001C 4770            BX               LR
+   32 0000001E         
+   33 0000001E BF00            NOP
+   34 00000020         
+   35 00000020                 END
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\objects\context.d -o.\objects\context.o -I.\RTE\Device\LPC1768 -
+I.\RTE\_Target_1 -I"C:\Users\Peisen Hu\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\
+CMSIS\Core\Include" -I"C:\Users\Peisen Hu\AppData\Local\Arm\Packs\Keil\LPC1700_
+DFP\2.7.1\Device\Include" --predefine="__EVAL SETA 1" --predefine="__MICROLIB S
+ETA 1" --predefine="__UVISION_VERSION SETA 529" --predefine="_RTE_ SETA 1" --pr
+edefine="LPC175x_6x SETA 1" --list=.\listings\context.lst context.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+PendSV_Handler 00000000
+
+Symbol: PendSV_Handler
+   Definitions
+      At line 7 in file context.s
+   Uses
+      At line 4 in file context.s
+Comment: PendSV_Handler used once
+handle_pend 00000000
+
+Symbol: handle_pend
+   Definitions
+      At line 1 in file context.s
+   Uses
+      None
+Comment: handle_pend unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+_global_resume_stack_pointer 00000000
+
+Symbol: _global_resume_stack_pointer
+   Definitions
+      At line 2 in file context.s
+   Uses
+      At line 19 in file context.s
+Comment: _global_resume_stack_pointer used once
+_global_save_stack_pointer 00000000
+
+Symbol: _global_save_stack_pointer
+   Definitions
+      At line 3 in file context.s
+   Uses
+      At line 14 in file context.s
+Comment: _global_save_stack_pointer used once
+2 symbols
+341 symbols in table
